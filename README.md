@@ -1,0 +1,1 @@
+# dota2_autoaccept
