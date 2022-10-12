@@ -3,7 +3,7 @@
 #include "minhook/MinHook.h"
 #pragma comment(lib, "libMinHook.x64.lib")
 
-uintptr_t FindPattern(const uintptr_t pModuleBaseAddress, const char* szSignature, const size_t nSelectResultIndex) {
+std::uintptr_t FindPattern(const std::uintptr_t pModuleBaseAddress, const char* szSignature, const std::size_t nSelectResultIndex) {
     if (!pModuleBaseAddress) return NULL;
 
     constexpr auto PatternToBytes = [](const char* szpattern) {
@@ -29,7 +29,7 @@ uintptr_t FindPattern(const uintptr_t pModuleBaseAddress, const char* szSignatur
     const auto pScanBytes = reinterpret_cast<std::uint8_t*>(pModuleBaseAddress);
     const auto m_iPatternBytesSize = m_iPatternBytes.size();
     const auto m_iPatternBytesData = m_iPatternBytes.data();
-    size_t nFoundResults = 0;
+    std::size_t nFoundResults = 0;
 
     for (auto i = 0ul; i < dwSizeOfImage - m_iPatternBytesSize; ++i) {
         auto already_found = true;
@@ -47,15 +47,15 @@ uintptr_t FindPattern(const uintptr_t pModuleBaseAddress, const char* szSignatur
                     nFoundResults++;
                     already_found = false;
                 }
-                else return reinterpret_cast<uintptr_t>(&pScanBytes[i]);
+                else return reinterpret_cast<std::uintptr_t>(&pScanBytes[i]);
             }
-            else return reinterpret_cast<uintptr_t>(&pScanBytes[i]);
+            else return reinterpret_cast<std::uintptr_t>(&pScanBytes[i]);
         }
     }
     return NULL;
 }
 
-uintptr_t GetAbsoluteAddress(const uintptr_t instruction_ptr, const short offset, const short size)
+std::uintptr_t GetAbsoluteAddress(const std::uintptr_t instruction_ptr, const short offset, const short size)
 {
-    return instruction_ptr + *reinterpret_cast<int32_t*>(instruction_ptr + offset) + size;
+    return instruction_ptr + *reinterpret_cast<std::int32_t*>(instruction_ptr + offset) + size;
 }
